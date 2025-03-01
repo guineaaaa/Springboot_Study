@@ -21,11 +21,7 @@ public class BasicController {
         return "피싱 사이트 에요";
     }
 
-    @GetMapping("/mypage")
-    @ResponseBody
-    String mypage(){
-        return "마이페이지";
-    }
+
 
     @GetMapping("/date")
     @ResponseBody
