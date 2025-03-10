@@ -1,9 +1,11 @@
 package com.apple.shopExample;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.util.Date;
 
+@ToString
 @Entity
 public class notice {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,4 +13,9 @@ public class notice {
 
     public String title;
     public Date date;
+
+    public String toString(){
+        return this.title+this.date;
+    }
+
 }
