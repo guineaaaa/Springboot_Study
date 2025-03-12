@@ -1,10 +1,14 @@
 package com.apple.shopExample;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString //toString을 알아서 lombok이 만들어줌
 @Entity
+@Getter
+@Setter
 public class Item {
     @Id @GeneratedValue(strategy= GenerationType.IDENTITY) //Autoincrement
     private Long id;
