@@ -85,8 +85,8 @@ public class ItemController {
         if(result.isPresent()){
             model.addAttribute("data", result.get());
             System.out.println(result.get());
-            return "detail.html";
 
+            return "detail.html";
         }else{
             return "redirect:/list";
         }
