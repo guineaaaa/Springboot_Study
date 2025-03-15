@@ -1,5 +1,7 @@
 package com.apple.shopExample;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -75,12 +77,9 @@ public class ItemController {
 
 
     @GetMapping("/detail/{id}")
-    String detail(@PathVariable Long id, Model model){
+    String detail(@PathVariable Long id, Model model)throws Exception{
         System.out.println(id);
 
-        // 비어있을 수도 있고, Item일수도 있음
-        // id에 따른 데이터 결과가 없을수도 있으니까
-        // Optional은 if문으로 한번 체크하는것이 좋음
         Optional<Item> result=itemRepository.findById(id);
         if(result.isPresent()){
             model.addAttribute("data", result.get());
@@ -93,4 +92,5 @@ public class ItemController {
 
 
     }
+
 }
