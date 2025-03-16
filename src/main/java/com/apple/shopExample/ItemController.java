@@ -14,65 +14,48 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-// @RequiredArgsConstructor
+@RequiredArgsConstructor
 public class ItemController {
 
-    private final ItemRepository itemRepository;
     private final ItemService itemService;
-    
-    // object를 알아서 뽑아서 여기에 넣어주세요
-    @Autowired
-    public ItemController(ItemRepository itemRepository, ItemService itemService) {
-        this.itemRepository = itemRepository;
-        this.itemService = itemService;
-    }
 
+    // 리스트 조회
     @GetMapping("/list")
-    String list(Model model) {
-        List<Item> result = itemRepository.findAll(); //itemobject 형태로 모든행가져오기
-        model.addAttribute("items", result);
-
-        /* just object 출력이여서 불편하다
-        var a=new Item();
-        System.out.println(a.toString());
-        System.out.println(a);
-        */
+    public String list(Model model){
+        List<Item> items=itemService.getAllItems();
+        // just List<Item>을 리턴하면 템플릿 엔진이 아닌 JSON으로 반환됨
+        model.addAttribute("items", items);
+        // model.addAtribute를 통해 items데이터를 HTML으로 넘겨주기
+        // 즉, HTML 파일에서 items 데이터를 사용할 수 있게 되는 것이다.
         return "list.html";
     }
 
+    // 쓰기 페이지
     @GetMapping("/write")
-    String write() {
+    public String write(){
         return "write.html";
     }
 
+    // 아이템 추가
     @PostMapping("/add")
-    String addPost(String title, String price) {
+    public String addPost(@RequestParam String title, @RequestParam String price){
         itemService.saveItem(title, price);
         return "redirect:/list";
     }
 
+    // 상세 페이지 조회
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Long id, Model model){
+        Item item=itemService.getItemById(id);
+        model.addAttribute("data", item);
+
+        return "detail.html";
+    }
+    
+    // 테스트용 데이터 출력
     @PostMapping("/test")
-    String add(@RequestParam Map formData) {
+    public String add(@RequestParam Map<String, String> formData){
         System.out.println(formData);
-        HashMap<String, String> test = new HashMap<>();
-        test.put("와우", "hey");
-        test.put("하하", "공화국");
-        System.out.println(test);
         return "redirect:/list";
     }
-
-    @GetMapping("/detail/{id}")
-    String detail(@PathVariable Long id, Model model) throws Exception {
-        System.out.println(id);
-
-        Optional<Item> result = itemRepository.findById(id);
-        if (result.isPresent()) {
-            model.addAttribute("data", result.get());
-            System.out.println(result.get());
-            return "detail.html";
-        } else {
-            return "redirect:/list";
-        }
-    }
-
 }
