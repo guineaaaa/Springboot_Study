@@ -41,4 +41,17 @@ public class ItemService {
     public Item getItemById(Long id){
         return itemRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 ID의 아이템을 찾을 수 없습니다"));
     }
+
+    // 아이템 수정
+    public void editItem(Long id, String title, String price){
+        Item item=new Item();
+
+        if(title.length()>1000){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "1000자 이상의 title은 불가능합니다");
+        }
+        item.setId(id);
+        item.setTitle(title);
+        item.setPrice(price);
+        itemRepository.save(item);
+    }
 }

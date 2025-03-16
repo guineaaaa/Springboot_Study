@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{nav.html::navbar}"></div>
+
+<!--put을 사용할 수도 있으나 <form>은 GET, POST만 가능-->
+<form action="/edit" method="POST">
+    <input name="id" th:value="${data.id}" style="display:none">
+    <input name="title" th:value="${data.title}">
+    <input name="price" th:value="${data.price}">
+    <button type="submit">전송</button>
+</form>
+
+</body>
+</html>
