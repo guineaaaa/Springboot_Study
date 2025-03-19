@@ -1,4 +1,4 @@
-package com.apple.shopExample;
+package com.apple.shopExample.notice;
 
 import jakarta.persistence.*;
 import lombok.ToString;

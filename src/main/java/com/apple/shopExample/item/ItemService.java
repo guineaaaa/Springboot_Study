@@ -1,4 +1,4 @@
-package com.apple.shopExample;
+package com.apple.shopExample.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
