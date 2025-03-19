@@ -17,7 +17,12 @@
         <a th:href="@{'/detail/'+${i.id}}">📍 details</a>
         <br/>
         <a th:href="@{'/edit/'+${i.id}}">✏️ edit</a>
-
+        <span th:onclick="fetch('/item?id=[[${i.id}]]',
+        { method:'DELETE' })
+          .then(r => r.text())
+          .then(() => {
+          location.reload();
+        })">🗑️</span>
     </div>
 </div>
 
