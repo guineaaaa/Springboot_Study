@@ -2,6 +2,7 @@ package com.apple.shopExample.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -82,5 +83,15 @@ public class ItemController {
         return ResponseEntity.status(200).body("삭제 완료");
     }
 
-
+    @GetMapping("/test2")
+    String deleteItem(){
+        var result=new BCryptPasswordEncoder().encode("문자열");
+        System.out.println("해싱결과 "+result);
+        /**
+         * 1. 같은 문자 해싱하면 항상 같은 결과
+         * 2. 원래 문자 추론 불가
+         * 3. 비번 해싱 시 salt+hash
+         */
+        return "redirect:/list";
+    }
 }
