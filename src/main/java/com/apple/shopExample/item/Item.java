@@ -1,5 +1,6 @@
 package com.apple.shopExample.item;
 
+import com.apple.shopExample.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +13,14 @@ import lombok.ToString;
 public class Item {
     @Id @GeneratedValue(strategy= GenerationType.IDENTITY) //Autoincrement
     private Long id;
+
     @Column(length=10000)
     private String title;
     private String price;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="member_id") // 외래 키로 member_id를 사용
+    private Member member;
 
     public Item(){}
 
@@ -32,7 +37,6 @@ public class Item {
     public String toString(){
         return this.title+this.price;
     }
-
 
 }
 

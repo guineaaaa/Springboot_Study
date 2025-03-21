@@ -18,6 +18,9 @@
     <img src="https://placehold.co/300">
     <div>
         <h4 th:text="${i.title}">바지</h4>
+        <a th:text="'작성자: '+(${i.member!=null? i.member.username:'❌'})">작성자</a>
+        <br/>
+
         <a th:href="@{'/detail/'+${i.id}}">📍 details</a>
         <br/>
         <a th:href="@{'/edit/'+${i.id}}">✏️ edit</a>

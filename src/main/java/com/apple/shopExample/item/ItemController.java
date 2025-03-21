@@ -1,6 +1,9 @@
 package com.apple.shopExample.item;
 
+import com.apple.shopExample.member.Member;
+import com.apple.shopExample.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemRepository itemRepository;
+    private final MemberRepository memberRepository;
 
     // 리스트 조회
     @GetMapping("/list")
@@ -37,8 +41,14 @@ public class ItemController {
 
     // 아이템 추가
     @PostMapping("/add")
-    public String addPost(@RequestParam String title, @RequestParam String price) {
-        itemService.saveItem(title, price);
+    public String addPost(@RequestParam String title, @RequestParam String price, Authentication auth) {
+        // 로그인한 사용자의 이름을 가져와 Member 조회
+        String username=auth.getName();
+        Member member=memberRepository.findByUsername(username)
+                        .orElseThrow(()-> new RuntimeException("사용자를 찾을 수 없습니다"));
+
+        // item 저장
+        itemService.saveItem(title, price,member);
         return "redirect:/list";
     }
 

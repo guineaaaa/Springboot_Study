@@ -1,5 +1,6 @@
 package com.apple.shopExample.item;
 
+import com.apple.shopExample.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     // 아이템 저장
-    public void saveItem(String title,String price){
+    public void saveItem(String title,String price, Member member){
         int parsedPrice;
         try{
             parsedPrice = Integer.parseInt(price);
@@ -29,6 +30,8 @@ public class ItemService {
         Item item=new Item();
         item.setTitle(title);
         item.setPrice(price);
+        item.setMember(member);
+
         itemRepository.save(item);
     }
 
