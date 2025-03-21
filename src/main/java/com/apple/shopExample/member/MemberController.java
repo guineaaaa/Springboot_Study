@@ -18,7 +18,10 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/register")
-    String register(){
+    String register(Authentication auth){
+        if(auth.isAuthenticated()){
+            return "redirect:/list";
+        }
         return "register.html";
     }
 

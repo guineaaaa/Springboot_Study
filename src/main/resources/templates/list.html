@@ -7,6 +7,10 @@
 </head>
 <body>
 <div th:replace="~{nav.html::navbar}"></div>
+<span sec:authentication="principal.username"></span>
+<div sec:authorize="isAuthenticated()">
+    <a href="/logout">로그아웃</a>
+</div>
 
 <!--th:each로 html 반복 생성 가능, i안의 자료 갯수만큼 반복 생성됨-->
 <!--item안에 있는걸 하나씩 까주는것-->
