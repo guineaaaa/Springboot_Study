@@ -1,15 +1,25 @@
-package com.apple.shopExample.item;
+package com.apple.shopExample;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    // spring이 뽑은 object를 bean이라고 한다
+    // bean으로 만들고싶은 object가 있으면 그걸 뱉는 함수를 만들고 @Configuration
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     // 어떤 페이지를 로그인 검사할지 
     // filterChain: 모든 유저의 요청과 서버의 응답 사이에 자동으로 실행해주고 싶은 코드를 담는곳
     @Bean
@@ -24,6 +34,7 @@ public class SecurityConfig {
                 // 특정 url에 로그인 검사를 할지 말지
                 // /** -> 모든 url
         );
+
 
         return http.build();
     }
