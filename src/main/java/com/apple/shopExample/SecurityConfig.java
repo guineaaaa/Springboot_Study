@@ -35,6 +35,12 @@ public class SecurityConfig {
                 // /** -> 모든 url
         );
 
+        http.formLogin((formLogin)
+                ->formLogin.loginPage("/login")
+                .defaultSuccessUrl("/list", true)
+                .failureUrl("/fail")
+        );
+
 
         return http.build();
     }
