@@ -10,6 +10,9 @@
 
 <!--put을 사용할 수도 있으나 <form>은 GET, POST만 가능-->
 <form action="/edit" method="POST">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}">
     <input name="id" th:value="${data.id}" style="display:none">
     <input name="title" th:value="${data.title}">
     <input name="price" th:value="${data.price}">

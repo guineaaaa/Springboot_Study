@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 
 @Configuration
@@ -20,14 +22,26 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository(){
+        HttpSessionCsrfTokenRepository repository=new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-CSRF-TOKEN");
+        return repository;
+    }
+
     // 어떤 페이지를 로그인 검사할지 
     // filterChain: 모든 유저의 요청과 서버의 응답 사이에 자동으로 실행해주고 싶은 코드를 담는곳
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // csrf 보안 기능을 /login에서만 끄기
+        http.csrf(csrf->csrf.csrfTokenRepository(csrfTokenRepository())
+                .ignoringRequestMatchers("/login")
+        );
+
         // csrf -> 다른 사이트에서 우리 url로 보낼 상황 대비
         // csrf 공격을 잠시 꺼줌..
         // jwt를 쓸 경우 fetch()의 headers:{}에 넣어서 보내면 csrf 예방 가능이긴함
-        http.csrf((csrf)->csrf.disable());
+        // http.csrf((csrf)->csrf.disable());
 
         http.authorizeHttpRequests((authorize) ->
                 authorize.requestMatchers("/**").permitAll()

@@ -29,7 +29,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
-}
+}	implementation 'org.springframework.session:spring-session-jdbc'
 
 tasks.named('test') {
 	useJUnitPlatform()

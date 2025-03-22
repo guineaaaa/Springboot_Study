@@ -9,6 +9,9 @@
 <div th:replace="~{nav.html::navbar}"></div>
 
 <form action="/add" method="POST">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}">
     <input name="title">
     <input name="price">
     <button type="submit">전송</button>
