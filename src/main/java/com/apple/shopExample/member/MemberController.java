@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -61,4 +62,28 @@ public class MemberController {
         return "mypage.html";
     }
 
+    @GetMapping("/user/1")
+    @ResponseBody
+    public MemberDto getUser(){
+        var a=memberRepository.findById(1L);
+        var result=a.get();
+        var data=new MemberDto(result.getUsername(), result.getDisplayname());
+        
+        return data;
+    }
+    // 한글 인코딩 깨짐 -> ResponseEntity 사용해도됨
+}
+
+// DTO object를 다른 형식으로 변환해서 보내고 싶을때 사용
+// Object를 변환해서 전송하려면 Map또는 DTO 클래스 사용
+// 1. DTO 쓰면 보내는 데이터의 타입 체크가 쉬움
+// 2. 클래스로 만들어 두게 되면 재사용 가능
+class MemberDto{
+    public String username; //public 또는 @Getter가 붙어있어야 json변환 가능
+    public String displayName;
+
+    MemberDto(String a, String b){
+        this.username=a;
+        this.displayName=b;
+    }
 }
