@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:margin="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,9 +7,9 @@
 </head>
 <body>
 <div th:replace="~{nav.html::navbar}"></div>
-<span sec:authentication="principal.username"></span>
-<div sec:authorize="isAuthenticated()">
-    <a href="/logout">로그아웃</a>
+
+<div>
+    <span>현재 로그인: <span sec:authentication="principal.username"></span></span>
 </div>
 
 <!--th:each로 html 반복 생성 가능, i안의 자료 갯수만큼 반복 생성됨-->
@@ -30,7 +30,18 @@
           .then(() => {
           location.reload();
         })">🗑️</span>
+
     </div>
+</div>
+
+<div>
+    <div>
+    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{'/list/page/' + ${i}}" th:text="${i}" th:classappend="${i == currentPage ? ' active' : ''}"></a>
+        <span> </span>
+    </span>
+</div>
+
 </div>
 
 </body>

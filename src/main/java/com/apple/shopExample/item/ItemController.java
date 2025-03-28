@@ -3,6 +3,9 @@ package com.apple.shopExample.item;
 import com.apple.shopExample.member.Member;
 import com.apple.shopExample.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -25,11 +29,13 @@ public class ItemController {
     // 리스트 조회
     @GetMapping("/list")
     public String list(Model model) {
-        List<Item> items = itemService.getAllItems();
-        // just List<Item>을 리턴하면 템플릿 엔진이 아닌 JSON으로 반환됨
-        model.addAttribute("items", items);
-        // model.addAtribute를 통해 items데이터를 HTML으로 넘겨주기
-        // 즉, HTML 파일에서 items 데이터를 사용할 수 있게 되는 것이다.
+
+            List<Item> items = itemService.getAllItems();
+            // just List<Item>을 리턴하면 템플릿 엔진이 아닌 JSON으로 반환됨
+            model.addAttribute("items", items);
+            // model.addAtribute를 통해 items데이터를 HTML으로 넘겨주기
+            // 즉, HTML 파일에서 items 데이터를 사용할 수 있게 되는 것이다.
+
         return "list.html";
     }
 
@@ -103,5 +109,20 @@ public class ItemController {
          * 3. 비번 해싱 시 salt+hash
          */
         return "redirect:/list";
+    }
+
+    @GetMapping("/list/page/{page}")
+    public String getListPage(Model model, @PathVariable int page) {
+
+        Page<Item> result=itemRepository.findPageBy(PageRequest.of(page-1,2));
+
+        model.addAttribute("items", result);
+
+        // 페이지 수를 계산
+        int totalPages = result.getTotalPages();
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+
+        return "list.html";
     }
 }

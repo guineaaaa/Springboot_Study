@@ -67,11 +67,10 @@ public class MemberController {
     public MemberDto getUser(){
         var a=memberRepository.findById(1L);
         var result=a.get();
-        var data=new MemberDto(result.getUsername(), result.getDisplayname());
-        
+        var data=new MemberDto(result.getUsername(), result.getDisplayname(), result.getId());
+        data.id=1L;
         return data;
     }
-    // 한글 인코딩 깨짐 -> ResponseEntity 사용해도됨
 }
 
 // DTO object를 다른 형식으로 변환해서 보내고 싶을때 사용
@@ -81,9 +80,15 @@ public class MemberController {
 class MemberDto{
     public String username; //public 또는 @Getter가 붙어있어야 json변환 가능
     public String displayName;
+    public Long id;
 
     MemberDto(String a, String b){
         this.username=a;
         this.displayName=b;
+    }
+    MemberDto(String a, String b, Long id){
+        this.username=a;
+        this.displayName=b;
+        this.id=id;
     }
 }
